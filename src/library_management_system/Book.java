@@ -1,4 +1,4 @@
-package edu.library_management_system;
+package library_management_system;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
 
-public class Book implements java.io.Serializable {
+public class Book{
     final static int FEE_PER_WEEK = 50;
 
     // To ensure each new book has a new id;

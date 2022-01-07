@@ -1,14 +1,15 @@
-package edu.library_management_system;
+package library_management_system;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
-public class Library implements java.io.Serializable {
-    final LinkedList<Object>[] books = new LinkedList[27];
-    final List<Object> booksSortedById= new ArrayList<>();
-
+public class Library{
+    @SuppressWarnings("unchecked")
+    final LinkedList<Book>[] books = new LinkedList[27];
+    final List<Book> booksSortedById = new ArrayList<>();
+    final List<User> users = new ArrayList<>();
 
     Library(){
         for (int i = 0; i < 27; i++) {
@@ -18,16 +19,16 @@ public class Library implements java.io.Serializable {
 
     // Insert element by order
     private void insert(int indexOfLL, Book book){
-        LinkedList LL = books[indexOfLL];
+        LinkedList<Book> LL = books[indexOfLL];
         int size = LL.size();
         if (size == 0) {
             LL.add(book);
-        } else if (((Book) LL.get(size - 1)).name.compareToIgnoreCase(book.name) < 0) {
+        } else if ((LL.get(size - 1)).name.compareToIgnoreCase(book.name) < 0) {
             LL.add(book);
         } else {
             int i;
             for (i = 0; i < size; i++) {
-                Boolean condition = ((Book) LL.get(i)).name.compareToIgnoreCase(book.name) > 0;
+                boolean condition = (LL.get(i)).name.compareToIgnoreCase(book.name) > 0;
                 if (condition)
                     break;
             }
@@ -53,11 +54,11 @@ public class Library implements java.io.Serializable {
         insert(start - 'a', book);
     }
 
-        public LinkedList<Object> searchBooks(String name){
-        LinkedList<Object> res = new LinkedList<>();
+    public LinkedList<Book> searchBooks(String name){
+        LinkedList<Book> res = new LinkedList<>();
         int index = name.toLowerCase(Locale.ROOT).charAt(0) - 'a';
         for (int i = 0; i < books[index].size() ; i++) {
-            if (((Book) books[index].get(i)).name.equals(name)) {
+            if ((books[index].get(i)).name.equals(name)) {
                 res.add(books[index].get(i));
             }
         }
@@ -65,6 +66,6 @@ public class Library implements java.io.Serializable {
     }
 
     public Book searchBookById(int id) {
-        return (Book) booksSortedById.get(id-1);
+        return booksSortedById.get(id-1);
     }
 }
