@@ -1,4 +1,4 @@
-package edu.library_management_system;
+package library_management_system;
 
 public class Main {
 
