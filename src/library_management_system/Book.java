@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
 
-public class Book{
+public class Book implements java.io.Serializable{
     final static int FEE_PER_WEEK = 50;
 
     // To ensure each new book has a new id;

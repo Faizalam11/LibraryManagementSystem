@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
-public class Library{
+public class Library implements java.io.Serializable{
     @SuppressWarnings("unchecked")
     final LinkedList<Book>[] books = new LinkedList[27];
     final List<Book> booksSortedById = new ArrayList<>();
@@ -18,7 +18,7 @@ public class Library{
     }
 
     // Insert element by order
-    private void insert(int indexOfLL, Book book){
+    private void insert_book(int indexOfLL, Book book){
         LinkedList<Book> LL = books[indexOfLL];
         int size = LL.size();
         if (size == 0) {
@@ -40,7 +40,7 @@ public class Library{
         Book book = new Book(name, author, publisher, edition, category, subcategory, copiesAvailable);
         booksSortedById.add(book);
         int start = name.toLowerCase(Locale.ROOT).charAt(0);
-        insert(start - 'a', book);
+        insert_book(start - 'a', book);
     }
 
     public void insertBook(String name, String author, String publisher, int edition, String category, String subcategory) {
@@ -51,7 +51,7 @@ public class Library{
         Book book = new Book(name, author);
         booksSortedById.add(book);
         int start = name.toLowerCase(Locale.ROOT).charAt(0);
-        insert(start - 'a', book);
+        insert_book(start - 'a', book);
     }
 
     public LinkedList<Book> searchBooks(String name){
@@ -63,6 +63,38 @@ public class Library{
             }
         }
         return res;
+    }
+
+    public User getUserByName(String name) {
+        for (User user: users) {
+            if (user.name == name) {
+                return user;
+            }
+        }
+        return null;
+    }
+
+    public User getUserByNIC(long NIC) {
+        for (User user: users) {
+            if (user.NIC == NIC) {
+                return user;
+            }
+        }
+        return null;
+    }
+
+    public void addUser(long NIC, String name, String email){
+        if (getUserByNIC(NIC) != null) {
+            return;
+        }
+        users.add(new User(NIC, name, email));
+    }
+
+    public void removeUser(long NIC) {
+        if (getUserByNIC(NIC) == null) {
+            return;
+        }
+        users.remove(getUserByNIC(NIC));
     }
 
     public Book searchBookById(int id) {
