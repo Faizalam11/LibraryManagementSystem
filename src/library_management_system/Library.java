@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Library implements java.io.Serializable{
     @SuppressWarnings("unchecked")
@@ -11,6 +12,8 @@ public class Library implements java.io.Serializable{
     private final List<Book> booksSortedById = new ArrayList<>();
     private final List<User> users = new ArrayList<>();
     private int earnings = 0;
+    AtomicInteger book_id = Book.currentId;
+    AtomicInteger user_id = User.currentId;
 
     Library(){
         for (int i = 0; i < 27; i++) {

@@ -6,12 +6,13 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Book implements java.io.Serializable{
     final static int FEE_PER_WEEK = 50;
 
     // To ensure each new book has a new id;
-    private static int currentId = 0;
+    static AtomicInteger currentId = new AtomicInteger(0);
     final String name, author, publisher, category, subcategory;
     final int id, edition;
     private int copiesAvailable, rentedCopies = 0;
@@ -25,7 +26,7 @@ public class Book implements java.io.Serializable{
         this.subcategory = subcategory;
         this.edition = edition;
         this.copiesAvailable = copiesAvailable;
-        this.id = ++currentId;
+        this.id = currentId.incrementAndGet();
         this.rentedTo = new ArrayList<>();
         this.rentingQueue = new LinkedList<>();
     }

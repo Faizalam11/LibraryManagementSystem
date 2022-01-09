@@ -1,6 +1,6 @@
 package library_management_system;
 
-import java.io.Console;
+import java.io.*;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -13,6 +13,7 @@ public class Main {
         // Admin Admin, for login
         Console con = System.console(); // Does not work in IDE
         Scanner in = new Scanner(System.in);
+
         String username;
         while (true) {
             System.out.println("Enter Login ID:");
@@ -37,7 +38,27 @@ public class Main {
             }
         }
         int choice;
-        Library library = new Library();
+        Library library;
+        File file = new File("library.ser");
+        if (file.exists() && file.isFile()) {
+            try {
+                FileInputStream fileIn = new FileInputStream(file);
+                ObjectInputStream objIn = new ObjectInputStream(fileIn);
+                library = (Library) objIn.readObject();
+                objIn.close();
+                fileIn.close();
+                Book.currentId = library.book_id;
+                User.currentId = library.user_id;
+            } catch (ClassNotFoundException | IOException e) {
+                e.printStackTrace();
+                library = new Library();
+            }
+
+
+        }
+        else {
+            library = new Library();
+        }
         System.out.println("Welcome to Library Management System, " + username + '!');
         while (true) {
             System.out.println("Press 1 to register a user:");
@@ -54,6 +75,7 @@ public class Main {
                 case 1 -> {
                     System.out.println("Enter New User NIC:");
                     long NIC = in.nextLong();
+                    in.nextLine();
                     System.out.println("Enter New User name:");
                     String userName = in.nextLine();
                     System.out.println("Enter New User email:");
@@ -63,6 +85,7 @@ public class Main {
                 case 2 -> {
                     System.out.println("Enter User NIC:");
                     long userNIC = in.nextLong();
+                    in.nextLine();
                     User user = library.getUserByNIC(userNIC);
                     if (user == null) {
                         System.out.println("Please Register First!");
@@ -78,6 +101,7 @@ public class Main {
                 case 3 -> {
                     System.out.println("Enter User NIC:");
                     long user_NIC = in.nextLong();
+                    in.nextLine();
                     User temp_user = library.getUserByNIC(user_NIC);
                     if (temp_user == null) {
                         System.out.println("Please Register First!");
@@ -93,6 +117,7 @@ public class Main {
                 }
                 case 4 -> System.out.println(library);
                 case 5 -> {
+                    in.nextLine();
                     System.out.println("Enter Book Details: ");
                     System.out.println("\tEnter Book's Name:");
                     String name = in.nextLine();
@@ -102,12 +127,14 @@ public class Main {
                     String publisher = in.nextLine();
                     System.out.println("\tEnter Book's Edition:");
                     int edition = in.nextInt();
+                    in.nextLine();
                     System.out.println("\tEnter Book's Category/Subject:");
                     String category = in.nextLine();
                     System.out.println("\tEnter Book's Sub-category/field:");
                     String subcategory = in.nextLine();
                     System.out.println("\tEnter Book's copies Available in Library:");
                     int copiesAvailable = in.nextInt();
+                    in.nextLine();
                     library.insertBook(name, author, publisher, edition, category, subcategory, copiesAvailable);
                 }
                 case 6 -> {
@@ -126,14 +153,27 @@ public class Main {
                     }
                     System.out.println("Enter the copies to add or remove: ");
                     int copies = in.nextInt();
+                    in.nextLine();
                     book.addCopiesAvailable(copies);
                 }
                 case 8 -> {
                     System.out.println("Enter NIC of User to remove:");
                     long nic = in.nextLong();
+                    in.nextLine();
                     library.removeUser(nic);
                 }
-                case 9 -> System.exit(0);
+                case 9 -> {
+                    try {
+                        FileOutputStream fileOut = new FileOutputStream("library.ser");
+                        ObjectOutputStream out = new ObjectOutputStream(fileOut);
+                        out.writeObject(library);
+                        out.close();
+                        fileOut.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    System.exit(0);
+                }
                 default -> System.out.println("Enter only numbers mentioned above!!!");
             }
         }
@@ -148,6 +188,7 @@ public class Main {
         System.out.println(library.searchBooks(bookName));
         System.out.println("Enter the Book id: ");
         int bookId = in.nextInt();
+        in.nextLine();
         return library.searchBookById(bookId);
     }
 

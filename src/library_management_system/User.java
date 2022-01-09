@@ -1,6 +1,7 @@
 package library_management_system;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class User implements java.io.Serializable{
     final String name;
@@ -8,7 +9,7 @@ public class User implements java.io.Serializable{
     final String username;
     final long NIC;
     final int id;
-    static int currentId = 0;
+    static AtomicInteger currentId = new AtomicInteger(0);
 
     enum BOOK_STATUS {
         LENDING, WAITING_LIST
@@ -35,7 +36,7 @@ public class User implements java.io.Serializable{
     }
 
     public User(long NIC, String name, String password) {
-        this(++currentId, NIC, name, password);
+        this(currentId.incrementAndGet(), NIC, name, password);
     }
 
     private int searchUserBooks(Book book) {
