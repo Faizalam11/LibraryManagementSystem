@@ -11,12 +11,12 @@ public class Book implements java.io.Serializable{
     final static int FEE_PER_WEEK = 50;
 
     // To ensure each new book has a new id;
-    static int currentId = 0;
+    private static int currentId = 0;
     final String name, author, publisher, category, subcategory;
     final int id, edition;
-    int copiesAvailable, rentedCopies = 0;
-    final ArrayList<String[]> rentedTo;
-    final Queue<String> rentingQueue;
+    private int copiesAvailable, rentedCopies = 0;
+    private final ArrayList<String[]> rentedTo;
+    private final Queue<String> rentingQueue;
     public Book(String name, String author, String publisher, int edition, String category, String subcategory, int copiesAvailable) {
         this.name = name;
         this.author = author;
@@ -30,20 +30,36 @@ public class Book implements java.io.Serializable{
         this.rentingQueue = new LinkedList<>();
     }
 
-
-    public Book(String name, String author, String publisher, int edition, String category, String subcategory){
-        this(name, author, publisher, edition, category, subcategory, 1);
+    public int getCopiesAvailable() {
+        return copiesAvailable;
     }
 
-    public Book(String name, String author){
-        this(name, author, null, 1, null, null, 1);
+    public int getRentedCopies() {
+        return rentedCopies;
     }
+
+    public ArrayList<String[]> getRentedTo() {
+        return new ArrayList<>(rentedTo);
+    }
+
+    public Queue<String> getRentingQueue() {
+        return new LinkedList<>(rentingQueue);
+    }
+
 
     // To add copies, copies parameter should be positive;
     // To remove copies, copies parameter should be negative;
 
-    public void changeCopiesAvailable(int copies) {
-        this.copiesAvailable += copies;
+    public void addCopiesAvailable(int copies){
+        if (this.copiesAvailable + copies >= 0) {
+            this.copiesAvailable += copies;
+        } else {
+            try {
+                throw new IllegalArgumentException("Copies Available can not be less than zero!");
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+            }
+        }
     }
     private int rentedToSearch(String userid) {
         for (int i = 0; i < rentedTo.size();i++){
@@ -56,12 +72,11 @@ public class Book implements java.io.Serializable{
 
     // Userid is "username@id"
 
-    public Boolean rentBook(String userid) {
+    public void rentBook(String userid) {
         int queueSize = rentingQueue.size();
         if (copiesAvailable <= queueSize && !userid.equals(rentingQueue.peek())) {
             rentingQueue.offer(userid);
             System.out.println(userid + " is added to waiting queue for this book");
-            return false;
         } else {
             if (queueSize != 0){
                 rentingQueue.poll();
@@ -71,7 +86,6 @@ public class Book implements java.io.Serializable{
             String[] data = {userid, LocalDateTime.now().toString()};
             rentedTo.add(data);
             System.out.println(data[0] + " rented Book " + name + " on " + data[1]);
-            return true;
         }
     }
     public int calculateFee(LocalDateTime lendingTime) {
@@ -83,10 +97,10 @@ public class Book implements java.io.Serializable{
         return (int) (FEE_PER_WEEK * weeks);
     }
 
-    public Boolean returnBook(String userid) {
+    public int returnBook(String userid) {
         int index = rentedToSearch(userid);
         if (rentedCopies == 0 || index == -1) {
-            return false;
+            return 0;
         }
         else{
             Scanner in = new Scanner(System.in);
@@ -97,7 +111,7 @@ public class Book implements java.io.Serializable{
             copiesAvailable++;
             rentedCopies--;
             rentedTo.remove(index);
-            return true;
+            return fees;
         }
     }
 

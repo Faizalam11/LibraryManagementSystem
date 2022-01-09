@@ -7,14 +7,35 @@ import java.util.Locale;
 
 public class Library implements java.io.Serializable{
     @SuppressWarnings("unchecked")
-    final LinkedList<Book>[] books = new LinkedList[27];
-    final List<Book> booksSortedById = new ArrayList<>();
-    final List<User> users = new ArrayList<>();
+    private final LinkedList<Book>[] books = new LinkedList[27];
+    private final List<Book> booksSortedById = new ArrayList<>();
+    private final List<User> users = new ArrayList<>();
+    private int earnings = 0;
 
     Library(){
         for (int i = 0; i < 27; i++) {
             books[i] = new LinkedList<>();
         }
+    }
+
+    public int getEarnings() {
+        return earnings;
+    }
+
+    public void addEarnings(int earnings) {
+        if (earnings < 0) {
+            System.out.println("Earnings cannot be less than 0!");
+            return;
+        }
+        this.earnings += earnings;
+    }
+
+    public List<Book> getBooks() {
+        return new ArrayList<>(booksSortedById);
+    }
+
+    public List<User> getUsers() {
+        return new ArrayList<>(users);
     }
 
     // Insert element by order
@@ -43,17 +64,6 @@ public class Library implements java.io.Serializable{
         insert_book(start - 'a', book);
     }
 
-    public void insertBook(String name, String author, String publisher, int edition, String category, String subcategory) {
-        insertBook(name, author, publisher, edition, category, subcategory, 1);
-    }
-
-    public void insertBook(String name, String author) {
-        Book book = new Book(name, author);
-        booksSortedById.add(book);
-        int start = name.toLowerCase(Locale.ROOT).charAt(0);
-        insert_book(start - 'a', book);
-    }
-
     public LinkedList<Book> searchBooks(String name){
         LinkedList<Book> res = new LinkedList<>();
         int index = name.toLowerCase(Locale.ROOT).charAt(0) - 'a';
@@ -65,13 +75,34 @@ public class Library implements java.io.Serializable{
         return res;
     }
 
-    public User getUserByName(String name) {
-        for (User user: users) {
-            if (user.name == name) {
-                return user;
-            }
+    public Book searchBookById(int id) {
+        if (id < booksSortedById.size() && id >= 0) {
+            return booksSortedById.get(id-1);
         }
         return null;
+    }
+
+    public void removeBook(int id) {
+        Book book = searchBookById(id);
+        if (book != null) {
+            // To not cause chaos;
+            booksSortedById.set(id-1, null);
+            int index = book.name.toLowerCase(Locale.ROOT).charAt(0) - 'a';
+            books[index].remove(book);
+        }
+    }
+
+    public ArrayList<User> getUserByName(String name) {
+        ArrayList<User> res = new ArrayList<>();
+        for (User user: users) {
+            if (name.equals(user.name)) {
+                res.add(user);
+            }
+        }
+        if (res.isEmpty()) {
+            return null;
+        }
+        return res;
     }
 
     public User getUserByNIC(long NIC) {
@@ -97,7 +128,12 @@ public class Library implements java.io.Serializable{
         users.remove(getUserByNIC(NIC));
     }
 
-    public Book searchBookById(int id) {
-        return booksSortedById.get(id-1);
+    @Override
+    public String toString() {
+        return "Library{" +
+                "booksSortedById=" + booksSortedById +
+                ", users=" + users +
+                ", earnings=" + earnings +
+                '}';
     }
 }

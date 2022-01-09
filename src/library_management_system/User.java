@@ -3,18 +3,20 @@ package library_management_system;
 import java.util.ArrayList;
 
 public class User implements java.io.Serializable{
-    String name, email, username;
-    long NIC;
-    int id;
+    final String name;
+    final String email;
+    final String username;
+    final long NIC;
+    final int id;
     static int currentId = 0;
 
     enum BOOK_STATUS {
-        LENDING, WAITING_LIST;
+        LENDING, WAITING_LIST
     }
 
     static class BookStatus {
-        Book book;
-        BOOK_STATUS status;
+        final Book book;
+        final BOOK_STATUS status;
 
         public BookStatus(Book book, BOOK_STATUS status) {
             this.book = book;
@@ -34,6 +36,48 @@ public class User implements java.io.Serializable{
 
     public User(long NIC, String name, String password) {
         this(++currentId, NIC, name, password);
+    }
+
+    private int searchUserBooks(Book book) {
+        for (int i = 0; i < user_books.size(); i++) {
+            if (user_books.get(i).book == book)
+                return i;
+        }
+        return -1;
+    }
+
+
+
+    public void addBook(Book book, Boolean isLent) {
+        int index = searchUserBooks(book);
+        if (index != -1) {
+            user_books.remove(index);
+        } else if (isLent) {
+            user_books.add(new BookStatus(book, BOOK_STATUS.LENDING));
+        } else {
+            user_books.add(new BookStatus(book, BOOK_STATUS.WAITING_LIST));
+        }
+    }
+
+    public Boolean removeBook(Book book) {
+        int index = searchUserBooks(book);
+        if (index != -1) {
+            user_books.remove(index);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", username='" + username + '\'' +
+                ", NIC=" + NIC +
+                ", id=" + id +
+                ", user_books=" + user_books +
+                '}';
     }
 
     // Due to time shortage, can not get it to work. Commented here to help in DBMS project
@@ -99,35 +143,5 @@ public class User implements java.io.Serializable{
         }
     }
 */
-
-    private int searchUserBooks(Book book) {
-        for (int i = 0; i < user_books.size(); i++) {
-            if (user_books.get(i).book == book)
-                return i;
-        }
-        return -1;
-    }
-
-
-
-    public void addBook(Book book, Boolean isLent) {
-        int index = searchUserBooks(book);
-        if (index != -1) {
-            user_books.remove(index);
-        } else if (isLent) {
-            user_books.add(new BookStatus(book, BOOK_STATUS.LENDING));
-        } else {
-            user_books.add(new BookStatus(book, BOOK_STATUS.WAITING_LIST));
-        }
-    }
-
-    public Boolean removeBook(Book book) {
-        int index = searchUserBooks(book);
-        if (index != -1) {
-            user_books.remove(index);
-            return true;
-        }
-        return false;
-    }
 
 }
