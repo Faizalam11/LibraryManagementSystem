@@ -134,7 +134,7 @@ public class Library implements java.io.Serializable{
 
     @Override
     public String toString() {
-        return "Library{" +
+        return "Library{" + "\n" +
                 "booksSortedById=" + booksSortedById + "\n" +
                 ", users=" + users + "\n" +
                 ", rentedBooks=" + rentedBooks+ "\n" +

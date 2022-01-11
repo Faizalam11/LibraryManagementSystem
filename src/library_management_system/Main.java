@@ -62,6 +62,7 @@ public class Main {
         }
         System.out.println("Welcome to Library Management System, " + username + '!');
         while (true) {
+            System.out.println("Press 0 to search for a book:");
             System.out.println("Press 1 to register a user:");
             System.out.println("Press 2 to lend a book:");
             System.out.println("Press 3 to return a book:");
@@ -73,6 +74,15 @@ public class Main {
             System.out.println("Press 9 to exit:");
             choice = in.nextInt();
             switch (choice) {
+                case 0 -> {
+                    Book res = getBook(library);
+                    if (res == null) {
+                        System.out.println("Book not Found!");
+                    } else {
+                        System.out.println(res);
+                    }
+                    in.nextLine();
+                }
                 case 1 -> {
                     System.out.println("Enter New User NIC:");
                     long NIC = in.nextLong();
@@ -132,20 +142,20 @@ public class Main {
                 case 5 -> {
                     in.nextLine();
                     System.out.println("Enter Book Details: ");
-                    System.out.println("\tEnter Book's Name:");
+                    System.out.print("\tEnter Book's Name:");
                     String name = in.nextLine();
-                    System.out.println("\tEnter Book's Author Name:");
+                    System.out.print("\n\tEnter Book's Author Name:");
                     String author = in.nextLine();
-                    System.out.println("\tEnter Book's Publisher:");
+                    System.out.print("\n\tEnter Book's Publisher:");
                     String publisher = in.nextLine();
-                    System.out.println("\tEnter Book's Edition:");
+                    System.out.print("\n\tEnter Book's Edition:");
                     int edition = in.nextInt();
                     in.nextLine();
-                    System.out.println("\tEnter Book's Category/Subject:");
+                    System.out.print("\n\tEnter Book's Category/Subject:");
                     String category = in.nextLine();
-                    System.out.println("\tEnter Book's Sub-category/field:");
+                    System.out.print("\n\tEnter Book's Sub-category/field:");
                     String subcategory = in.nextLine();
-                    System.out.println("\tEnter Book's copies Available in Library:");
+                    System.out.print("\n\tEnter Book's copies Available in Library:");
                     int copiesAvailable = in.nextInt();
                     in.nextLine();
                     library.insertBook(name, author, publisher, edition, category, subcategory, copiesAvailable);
