@@ -80,7 +80,7 @@ public class Library implements java.io.Serializable{
     }
 
     public Book searchBookById(int id) {
-        if (id < booksSortedById.size() && id >= 0) {
+        if (id <= booksSortedById.size() && id >= 0) {
             return booksSortedById.get(id-1);
         }
         return null;

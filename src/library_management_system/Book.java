@@ -92,9 +92,10 @@ public class Book implements java.io.Serializable{
     public int calculateFee(LocalDateTime lendingTime) {
         long days = Duration.between(lendingTime, LocalDateTime.now()).toDays();
         long weeks = days/7;
-        if (days % 7 != 0) {
+        if (days % 7 != 0 || weeks == 0) {
             weeks++;
         }
+
         return (int) (FEE_PER_WEEK * weeks);
     }
 
