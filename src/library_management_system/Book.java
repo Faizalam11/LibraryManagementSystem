@@ -122,18 +122,18 @@ public class Book implements java.io.Serializable{
 
     @Override
     public String toString() {
-        return "Book{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", author='" + author + '\'' +
-                ", publisher='" + publisher + '\'' +
-                ", category='" + category + '\'' +
-                ", subcategory='" + subcategory + '\'' +
-                ", edition=" + edition +
-                ", copiesAvailable=" + copiesAvailable +
-                ", rentedCopies=" + rentedCopies +
-                ", rentedTo=" + rentedTo +
-                ", rentingQueue=" + rentingQueue +
+        return "Book{\n" +
+                "id=" + id + '\n' +
+                ", name='" + name + "'\n" +
+                ", author='" + author + "'\n" +
+                ", publisher='" + publisher + "'\n" +
+                ", category='" + category + "'\n" +
+                ", subcategory='" + subcategory + "'\n" +
+                ", edition=" + edition +  '\n' +
+                ", copiesAvailable=" + copiesAvailable +  '\n' +
+                ", rentedCopies=" + rentedCopies +  '\n' +
+                ", rentedTo=" + rentedTo +  '\n' +
+                ", rentingQueue=" + rentingQueue +  '\n' +
                 '}';
     }
 

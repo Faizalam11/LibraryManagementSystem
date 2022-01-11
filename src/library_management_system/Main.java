@@ -5,6 +5,7 @@ import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDateTime;
 import java.util.Scanner;
 
 public class Main {
@@ -80,7 +81,12 @@ public class Main {
                     String userName = in.nextLine();
                     System.out.println("Enter New User email:");
                     String email = in.nextLine();
-                    library.addUser(NIC, userName, email);
+                    if (library.getUserByNIC(NIC) == null) {
+                        library.addUser(NIC, userName, email);
+                    } else {
+                        System.out.println("User is already registered!");
+                    }
+                    in.nextLine();
                 }
                 case 2 -> {
                     System.out.println("Enter User NIC:");
@@ -94,9 +100,11 @@ public class Main {
                         if (book_to_lend == null) {
                             System.out.println("Please add the Book first!");
                         } else {
+                            library.rentedBooks.add(new String[]{user.username, book_to_lend.toString(), LocalDateTime.now().toString()});
                             book_to_lend.rentBook(user.username);
                         }
                     }
+                    in.nextLine();
                 }
                 case 3 -> {
                     System.out.println("Enter User NIC:");
@@ -112,10 +120,15 @@ public class Main {
                         } else {
                             int fees = book_lent.returnBook(temp_user.username);
                             library.addEarnings(fees);
+                            library.rentedBooks.removeIf(entry -> entry[1].equals(temp_user.username) && entry[2].equals(book_lent.toString()));
                         }
                     }
+                    in.nextLine();
                 }
-                case 4 -> System.out.println(library);
+                case 4 -> {
+                    System.out.println(library);
+                    in.nextLine();
+                }
                 case 5 -> {
                     in.nextLine();
                     System.out.println("Enter Book Details: ");
@@ -141,6 +154,7 @@ public class Main {
                     Book rem_book = getBook(library);
                     if (rem_book == null) {
                         System.out.println("Please add the Book first!");
+                        in.nextLine();
                         break;
                     }
                     library.removeBook(rem_book.id);
@@ -149,6 +163,7 @@ public class Main {
                     Book book = getBook(library);
                     if (book == null) {
                         System.out.println("Please add the Book first!");
+                        in.nextLine();
                         break;
                     }
                     System.out.println("Enter the copies to add or remove: ");
@@ -174,7 +189,10 @@ public class Main {
                     }
                     System.exit(0);
                 }
-                default -> System.out.println("Enter only numbers mentioned above!!!");
+                default -> {
+                    System.out.println("Enter only numbers mentioned above!!!");
+                    in.nextLine();
+                }
             }
         }
 

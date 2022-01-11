@@ -72,12 +72,12 @@ public class User implements java.io.Serializable{
     @Override
     public String toString() {
         return "User{" +
-                "name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", username='" + username + '\'' +
-                ", NIC=" + NIC +
-                ", id=" + id +
-                ", user_books=" + user_books +
+                "name='" + name + "'\n" +
+                ", email='" + email + "'\n" +
+                ", username='" + username + "'\n" +
+                ", NIC=" + NIC + "\n" +
+                ", id=" + id + "\n" +
+                ", user_books=" + user_books + "\n" +
                 '}';
     }
 

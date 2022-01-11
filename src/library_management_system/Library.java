@@ -14,6 +14,7 @@ public class Library implements java.io.Serializable{
     private int earnings = 0;
     AtomicInteger book_id = Book.currentId;
     AtomicInteger user_id = User.currentId;
+    ArrayList<String[]> rentedBooks = new ArrayList<>();
 
     Library(){
         for (int i = 0; i < 27; i++) {
@@ -134,9 +135,10 @@ public class Library implements java.io.Serializable{
     @Override
     public String toString() {
         return "Library{" +
-                "booksSortedById=" + booksSortedById +
-                ", users=" + users +
-                ", earnings=" + earnings +
+                "booksSortedById=" + booksSortedById + "\n" +
+                ", users=" + users + "\n" +
+                ", rentedBooks=" + rentedBooks+ "\n" +
+                ", earnings=" + earnings + "\n" +
                 '}';
     }
 }
