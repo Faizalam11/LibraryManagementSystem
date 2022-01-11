@@ -141,7 +141,7 @@ public class Main {
                 }
                 case 5 -> {
                     in.nextLine();
-                    System.out.println("Enter Book Details: ");
+                    System.out.println("Enter Book Details:");
                     System.out.print("\tEnter Book's Name:");
                     String name = in.nextLine();
                     System.out.print("\n\tEnter Book's Author Name:");
