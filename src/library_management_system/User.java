@@ -60,13 +60,11 @@ public class User implements java.io.Serializable{
         }
     }
 
-    public Boolean removeBook(Book book) {
+    public void removeBook(Book book) {
         int index = searchUserBooks(book);
         if (index != -1) {
             user_books.remove(index);
-            return true;
         }
-        return false;
     }
 
     @Override

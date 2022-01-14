@@ -22,24 +22,12 @@ public class Library implements java.io.Serializable{
         }
     }
 
-    public int getEarnings() {
-        return earnings;
-    }
-
     public void addEarnings(int earnings) {
         if (earnings < 0) {
             System.out.println("Earnings cannot be less than 0!");
             return;
         }
         this.earnings += earnings;
-    }
-
-    public List<Book> getBooks() {
-        return new ArrayList<>(booksSortedById);
-    }
-
-    public List<User> getUsers() {
-        return new ArrayList<>(users);
     }
 
     // Insert element by order
@@ -94,19 +82,6 @@ public class Library implements java.io.Serializable{
             int index = book.name.toLowerCase(Locale.ROOT).charAt(0) - 'a';
             books[index].remove(book);
         }
-    }
-
-    public ArrayList<User> getUserByName(String name) {
-        ArrayList<User> res = new ArrayList<>();
-        for (User user: users) {
-            if (name.equals(user.name)) {
-                res.add(user);
-            }
-        }
-        if (res.isEmpty()) {
-            return null;
-        }
-        return res;
     }
 
     public User getUserByNIC(long NIC) {

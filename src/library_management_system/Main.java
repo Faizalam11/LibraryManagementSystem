@@ -111,7 +111,7 @@ public class Main {
                             System.out.println("Please add the Book first!");
                         } else {
                             library.rentedBooks.add(new String[]{user.username, book_to_lend.toString(), LocalDateTime.now().toString()});
-                            book_to_lend.rentBook(user.username);
+                            user.addBook(book_to_lend, book_to_lend.rentBook(user.username));
                         }
                     }
                     in.nextLine();
@@ -131,6 +131,7 @@ public class Main {
                             int fees = book_lent.returnBook(temp_user.username);
                             library.addEarnings(fees);
                             library.rentedBooks.removeIf(entry -> entry[1].equals(temp_user.username) && entry[2].equals(book_lent.toString()));
+                            temp_user.removeBook(book_lent);
                         }
                     }
                     in.nextLine();

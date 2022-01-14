@@ -31,22 +31,6 @@ public class Book implements java.io.Serializable{
         this.rentingQueue = new LinkedList<>();
     }
 
-    public int getCopiesAvailable() {
-        return copiesAvailable;
-    }
-
-    public int getRentedCopies() {
-        return rentedCopies;
-    }
-
-    public ArrayList<String[]> getRentedTo() {
-        return new ArrayList<>(rentedTo);
-    }
-
-    public Queue<String> getRentingQueue() {
-        return new LinkedList<>(rentingQueue);
-    }
-
 
     // To add copies, copies parameter should be positive;
     // To remove copies, copies parameter should be negative;
@@ -73,11 +57,12 @@ public class Book implements java.io.Serializable{
 
     // Userid is "username@id"
 
-    public void rentBook(String userid) {
+    public Boolean rentBook(String userid) {
         int queueSize = rentingQueue.size();
         if (copiesAvailable <= queueSize && !userid.equals(rentingQueue.peek())) {
             rentingQueue.offer(userid);
             System.out.println(userid + " is added to waiting queue for this book");
+            return false;
         } else {
             if (queueSize != 0){
                 rentingQueue.poll();
@@ -87,6 +72,7 @@ public class Book implements java.io.Serializable{
             String[] data = {userid, LocalDateTime.now().toString()};
             rentedTo.add(data);
             System.out.println(data[0] + " rented Book " + name + " on " + data[1]);
+            return true;
         }
     }
     public int calculateFee(LocalDateTime lendingTime) {
@@ -116,11 +102,6 @@ public class Book implements java.io.Serializable{
             return fees;
         }
     }
-
-    public String pollRentingQueue(){
-        return rentingQueue.poll();
-    }
-
     @Override
     public String toString() {
         return "Book{\n" +
